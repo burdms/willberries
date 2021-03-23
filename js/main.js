@@ -12,7 +12,6 @@ const mySwiper = new Swiper(".swiper-container", {
 
 const buttonCart = document.querySelector(".button-cart");
 const modalCart = document.querySelector("#modal-cart");
-// const modalClose = document.querySelector(".modal-close");
 
 const openModal = function () {
   modalCart.classList.add("show");
@@ -21,7 +20,7 @@ const closeModal = function () {
   modalCart.classList.remove("show");
 };
 
-// Code form the lesson v.1
+buttonCart.addEventListener("click", openModal);
 
 modalCart.addEventListener("click", function (event) {
   const target = event.target;
@@ -30,19 +29,6 @@ modalCart.addEventListener("click", function (event) {
     closeModal();
   }
 });
-
-// My code
-
-// modalCart.onclick = function (event) {
-//   const target = event.target;
-
-//   if (target.closest(".modal")) return;
-
-//   closeModal();
-// };
-
-buttonCart.addEventListener("click", openModal);
-// modalClose.addEventListener("click", closeModal);
 
 // Smooth scroll
 
