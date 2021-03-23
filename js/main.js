@@ -24,7 +24,7 @@ const closeModal = function () {
 modalCart.onclick = function (event) {
   let target = event.target;
 
-  if (target.classList == "modal") return;
+  if (target.closest(".modal")) return;
 
   closeModal();
 };
