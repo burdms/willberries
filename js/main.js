@@ -21,6 +21,14 @@ const closeModal = function () {
   modalCart.classList.remove("show");
 };
 
+modalCart.onclick = function (event) {
+  let target = event.target;
+
+  if (target.classList == "modal") return;
+
+  closeModal();
+};
+
 buttonCart.addEventListener("click", openModal);
 modalClose.addEventListener("click", closeModal);
 
