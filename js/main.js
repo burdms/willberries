@@ -108,6 +108,10 @@ navigationLink.forEach(function (link) {
     event.preventDefault();
     const field = link.dataset.field;
     const value = link.textContent;
-    filterCards(field, value);
+    if (value == "All") {
+      getGoods().then(renderCards);
+    } else {
+      filterCards(field, value);
+    }
   });
 });
