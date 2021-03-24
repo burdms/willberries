@@ -52,6 +52,8 @@ modalCart.addEventListener("click", function (event) {
 const more = document.querySelector(".more");
 const navigationLink = document.querySelectorAll(".navigation-link");
 const longGoodsList = document.querySelector(".long-goods-list");
+const showAccessories = document.querySelectorAll(".show-accessories");
+const showClothes = document.querySelectorAll(".show-clothes");
 
 const getGoods = async function () {
   const result = await fetch("db/db.json");
@@ -113,5 +115,18 @@ navigationLink.forEach(function (link) {
     } else {
       filterCards(field, value);
     }
+  });
+});
+
+showAccessories.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    event.preventDefault();
+    filterCards("category", "Accessories");
+  });
+});
+showClothes.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    event.preventDefault();
+    filterCards("category", "Clothing");
   });
 });
