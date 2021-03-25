@@ -70,16 +70,48 @@ const cart = {
     this.cartGoods = this.cartGoods.filter((item) => id !== item.id);
     this.renderCart();
   },
-  minusGood(id) {},
-  plusGood(id) {},
+  minusGood(id) {
+    for (const item of this.cartGoods) {
+      if (item.id === id) {
+        if (item.count <= 1) {
+          this.deleteGood(id);
+        } else {
+          item.count--;
+        }
+        break;
+      }
+    }
+    this.renderCart();
+  },
+  plusGood(id) {
+    for (const item of this.cartGoods) {
+      if (item.id === id) {
+        item.count++;
+        break;
+      }
+    }
+    this.renderCart();
+  },
   addCartGoods(id) {},
 };
 
 cartTableGoods.addEventListener("click", (event) => {
   const target = event.target;
-  if (target.classList.contains("cart-btn-delete")) {
+
+  if (target.tagName === "BUTTON") {
     const id = target.closest(".cart-item").dataset.id;
-    cart.deleteGood(id);
+
+    if (target.classList.contains("cart-btn-delete")) {
+      cart.deleteGood(id);
+    }
+
+    if (target.classList.contains("cart-btn-minus")) {
+      cart.minusGood(id);
+    }
+
+    if (target.classList.contains("cart-btn-plus")) {
+      cart.plusGood(id);
+    }
   }
 });
 
