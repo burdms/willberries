@@ -15,6 +15,8 @@ const navigationLink = document.querySelectorAll(".navigation-link");
 const longGoodsList = document.querySelector(".long-goods-list");
 const showAccessories = document.querySelectorAll(".show-accessories");
 const showClothes = document.querySelectorAll(".show-clothes");
+const cartTableGoods = document.querySelector(".cart-table__goods");
+const cardTableTotal = document.querySelector(".card-table__total");
 
 const getGoods = async () => {
   const result = await fetch("db/db.json");
@@ -24,9 +26,65 @@ const getGoods = async () => {
   return await result.json();
 };
 
+const cart = {
+  cartGoods: [
+    {
+      id: "099",
+      name: "Dior watch",
+      price: 290,
+      count: 3,
+    },
+    {
+      id: "098",
+      name: "Adidas sneakers",
+      price: 29,
+      count: 3,
+    },
+  ],
+  renderCart() {
+    cartTableGoods.textContent = "";
+    this.cartGoods.forEach(({ id, name, price, count }) => {
+      const trGood = document.createElement("tr");
+      trGood.className = ".cart-item";
+      trGood.dataset.id = id;
+      trGood.innerHTML = `
+        <td>${name}</td>
+        <td>${price}$</td>
+        <td><button class="cart-btn-minus" data-id="${id}">-</button></td>
+        <td>${count}</td>
+        <td><button class="cart-btn-plus" data-id="${id}">+</button></td>
+        <td>${price * count}$</td>
+        <td><button class="cart-btn-delete" data-id="${id}">x</button></td>
+      `;
+      cartTableGoods.append(trGood);
+    });
+
+    const totalPrice = this.cartGoods.reduce((sum, item) => {
+      return sum + item.price * item.count;
+    }, 0);
+
+    cardTableTotal.textContent = `${totalPrice}$`;
+  },
+  deleteGood(id) {
+    this.cartGoods = this.cartGoods.filter((item) => id !== item.id);
+    this.renderCart();
+  },
+  minusGood(id) {},
+  plusGood(id) {},
+  addCartGoods(id) {},
+};
+
+cartTableGoods.addEventListener("click", (event) => {
+  const target = event.target;
+  if (target.classList.contains("cart-btn-delete")) {
+    cart.deleteGood(target.dataset.id);
+  }
+});
+
 // Cart
 
 const openModal = () => {
+  cart.renderCart();
   modalCart.classList.add("show");
 };
 const closeModal = () => {
