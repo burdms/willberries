@@ -17,6 +17,7 @@ const showAccessories = document.querySelectorAll(".show-accessories");
 const showClothes = document.querySelectorAll(".show-clothes");
 const cartTableGoods = document.querySelector(".cart-table__goods");
 const cardTableTotal = document.querySelector(".card-table__total");
+const cartCount = document.querySelector(".cart-count");
 
 const checkGoods = () => {
   const data = [];
@@ -36,8 +37,15 @@ const checkGoods = () => {
 
 const getGoods = checkGoods();
 
+// Cart
+
 const cart = {
   cartGoods: [],
+  countQuantity() {
+    cartCount.textContent = this.cartGoods.reduce((sum, item) => {
+      return sum + item.count;
+    }, 0);
+  },
   renderCart() {
     cartTableGoods.textContent = "";
     this.cartGoods.forEach(({ id, name, price, count }) => {
@@ -66,6 +74,7 @@ const cart = {
   deleteGood(id) {
     this.cartGoods = this.cartGoods.filter((item) => id !== item.id);
     this.renderCart();
+    this.countQuantity();
   },
   minusGood(id) {
     for (const item of this.cartGoods) {
@@ -79,6 +88,7 @@ const cart = {
       }
     }
     this.renderCart();
+    this.countQuantity();
   },
   plusGood(id) {
     for (const item of this.cartGoods) {
@@ -88,6 +98,7 @@ const cart = {
       }
     }
     this.renderCart();
+    this.countQuantity();
   },
   addCartGoods(id) {
     const goodItem = this.cartGoods.find((item) => item.id === id);
@@ -103,6 +114,7 @@ const cart = {
             price,
             count: 1,
           });
+          this.countQuantity();
         });
     }
   },
@@ -135,8 +147,6 @@ cartTableGoods.addEventListener("click", (event) => {
     }
   }
 });
-
-// Cart
 
 const openModal = () => {
   cart.renderCart();
