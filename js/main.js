@@ -18,6 +18,7 @@ const showClothes = document.querySelectorAll(".show-clothes");
 const cartTableGoods = document.querySelector(".cart-table__goods");
 const cardTableTotal = document.querySelector(".card-table__total");
 const cartCount = document.querySelector(".cart-count");
+const buttonRed = document.querySelector(".button-red");
 
 const checkGoods = () => {
   const data = [];
@@ -45,6 +46,11 @@ const cart = {
     cartCount.textContent = this.cartGoods.reduce((sum, item) => {
       return sum + item.count;
     }, 0);
+  },
+  clearCart() {
+    this.cartGoods.length = 0;
+    this.countQuantity();
+    this.renderCart();
   },
   renderCart() {
     cartTableGoods.textContent = "";
@@ -119,6 +125,9 @@ const cart = {
     }
   },
 };
+
+buttonRed.addEventListener("click", cart.clearCart.bind(cart)); // .bind to save "cart" as "this"
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
 
 document.body.addEventListener("click", (event) => {
   const addToCart = event.target.closest(".add-to-cart");
