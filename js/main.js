@@ -18,13 +18,23 @@ const showClothes = document.querySelectorAll(".show-clothes");
 const cartTableGoods = document.querySelector(".cart-table__goods");
 const cardTableTotal = document.querySelector(".card-table__total");
 
-const getGoods = async () => {
-  const result = await fetch("db/db.json");
-  if (!result.ok) {
-    throw `Ошибких: ${result.status}`;
-  }
-  return await result.json();
+const checkGoods = () => {
+  const data = [];
+
+  return async () => {
+    if (data.length) return data;
+
+    const result = await fetch("db/db.json");
+    if (!result.ok) {
+      throw `Ошибких: ${result.status}`;
+    }
+    data.push(...(await result.json()));
+
+    return data;
+  };
 };
+
+const getGoods = checkGoods();
 
 const cart = {
   cartGoods: [],
