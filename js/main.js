@@ -8,21 +8,34 @@ const mySwiper = new Swiper(".swiper-container", {
   },
 });
 
-// Cart
-
 const buttonCart = document.querySelector(".button-cart");
 const modalCart = document.querySelector("#modal-cart");
+const more = document.querySelector(".more");
+const navigationLink = document.querySelectorAll(".navigation-link");
+const longGoodsList = document.querySelector(".long-goods-list");
+const showAccessories = document.querySelectorAll(".show-accessories");
+const showClothes = document.querySelectorAll(".show-clothes");
 
-const openModal = function () {
+const getGoods = async () => {
+  const result = await fetch("db/db.json");
+  if (!result.ok) {
+    throw `Ошибких: ${result.status}`;
+  }
+  return await result.json();
+};
+
+// Cart
+
+const openModal = () => {
   modalCart.classList.add("show");
 };
-const closeModal = function () {
+const closeModal = () => {
   modalCart.classList.remove("show");
 };
 
 buttonCart.addEventListener("click", openModal);
 
-modalCart.addEventListener("click", function (event) {
+modalCart.addEventListener("click", (event) => {
   const target = event.target;
 
   if (target.classList.contains("overlay") || target.classList.contains("modal-close")) {
@@ -48,20 +61,6 @@ modalCart.addEventListener("click", function (event) {
 }
 
 // Goods
-
-const more = document.querySelector(".more");
-const navigationLink = document.querySelectorAll(".navigation-link");
-const longGoodsList = document.querySelector(".long-goods-list");
-const showAccessories = document.querySelectorAll(".show-accessories");
-const showClothes = document.querySelectorAll(".show-clothes");
-
-const getGoods = async function () {
-  const result = await fetch("db/db.json");
-  if (!result.ok) {
-    throw `Ошибких: ${result.status}`;
-  }
-  return await result.json();
-};
 
 const createCard = function ({ label, img, name, description, id, price }) {
   const card = document.createElement("div");
@@ -96,17 +95,12 @@ more.addEventListener("click", function (event) {
 
 const filterCards = function (field, value) {
   getGoods()
-    .then(function (data) {
-      const filteredGoods = data.filter(function (good) {
-        return good[field] === value;
-      });
-      return filteredGoods;
-    })
+    .then((data) => data.filter((good) => good[field] === value))
     .then(renderCards);
 };
 
 navigationLink.forEach(function (link) {
-  link.addEventListener("click", function (event) {
+  link.addEventListener("click", (event) => {
     event.preventDefault();
     const field = link.dataset.field;
     const value = link.textContent;
