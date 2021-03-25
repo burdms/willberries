@@ -45,16 +45,17 @@ const cart = {
     cartTableGoods.textContent = "";
     this.cartGoods.forEach(({ id, name, price, count }) => {
       const trGood = document.createElement("tr");
-      trGood.className = ".cart-item";
+      trGood.className = "cart-item";
       trGood.dataset.id = id;
+
       trGood.innerHTML = `
         <td>${name}</td>
         <td>${price}$</td>
-        <td><button class="cart-btn-minus" data-id="${id}">-</button></td>
+        <td><button class="cart-btn-minus">-</button></td>
         <td>${count}</td>
-        <td><button class="cart-btn-plus" data-id="${id}">+</button></td>
+        <td><button class="cart-btn-plus">+</button></td>
         <td>${price * count}$</td>
-        <td><button class="cart-btn-delete" data-id="${id}">x</button></td>
+        <td><button class="cart-btn-delete">x</button></td>
       `;
       cartTableGoods.append(trGood);
     });
@@ -77,7 +78,8 @@ const cart = {
 cartTableGoods.addEventListener("click", (event) => {
   const target = event.target;
   if (target.classList.contains("cart-btn-delete")) {
-    cart.deleteGood(target.dataset.id);
+    const id = target.closest(".cart-item").dataset.id;
+    cart.deleteGood(id);
   }
 });
 
