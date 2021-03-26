@@ -43,9 +43,10 @@ const getGoods = checkGoods();
 const cart = {
   cartGoods: [],
   countQuantity() {
-    cartCount.textContent = this.cartGoods.reduce((sum, item) => {
+    const count = this.cartGoods.reduce((sum, item) => {
       return sum + item.count;
     }, 0);
+    cartCount.textContent = count ? count : "";
   },
   clearCart() {
     this.cartGoods.length = 0;
