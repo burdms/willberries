@@ -42,6 +42,9 @@ const getGoods = checkGoods();
 
 const cart = {
   cartGoods: [],
+  getCountCartGoods() {
+    return this.cartGoods.length;
+  },
   countQuantity() {
     const count = this.cartGoods.reduce((sum, item) => {
       return sum + item.count;
@@ -268,27 +271,52 @@ const postData = (dataUser) =>
     body: dataUser,
   });
 
+const validForm = (formData) => {
+  let valid = false;
+
+  for (const [, value] of formData) {
+    if (value.trim()) {
+      valid = true;
+    } else {
+      valid = false;
+      break;
+    }
+  }
+
+  return valid;
+};
+
 modalForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(modalForm);
-  formData.append("order", JSON.stringify(cart.cartGoods));
 
-  postData(formData)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      alert("Your order was submited. Our manager will contact you soon");
-      console.log(response.statusText);
-    })
-    .catch((err) => {
-      alert("Unfortunately, there is an unexpected error. Please, try again later");
-      console.error(err);
-    })
-    .finally(() => {
-      closeModal();
-      modalForm.reset();
-      cart.clearCart();
-    });
+  if (validForm(formData) && cart.getCountCartGoods()) {
+    formData.append("order", JSON.stringify(cart.cartGoods));
+
+    postData(formData)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        alert("Your order was submited. Our manager will contact you soon");
+        console.log(response.statusText);
+      })
+      .catch((err) => {
+        alert("Unfortunately, there is an unexpected error. Please, try again later");
+        console.error(err);
+      })
+      .finally(() => {
+        closeModal();
+        modalForm.reset();
+        cart.clearCart();
+      });
+  } else {
+    if (!validForm(formData)) {
+      alert("Please, fill in all fields");
+    }
+    if (!cart.getCountCartGoods()) {
+      alert("Your cart is empty. Add good to proceed");
+    }
+  }
 });
