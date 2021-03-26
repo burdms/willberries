@@ -124,6 +124,10 @@ const cart = {
         });
     }
   },
+  resetCart() {
+    this.cartGoods.length = 0;
+    this.countQuantity();
+  },
 };
 
 buttonRed.addEventListener("click", cart.clearCart.bind(cart)); // .bind to save "cart" as "this"
@@ -255,4 +259,39 @@ showClothes.forEach((item) => {
     event.preventDefault();
     filterCards("category", "Clothing");
   });
+});
+
+// Push data to the server
+
+const modalForm = document.querySelector(".modal-form");
+
+const postData = (dataUser) =>
+  fetch("server.php", {
+    method: "POST",
+    body: dataUser,
+  });
+
+modalForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(modalForm);
+  formData.append("order", JSON.stringify(cart.cartGoods));
+
+  postData(formData)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      alert("Your order was submited. Our manager will contact you soon");
+      console.log(response.statusText);
+    })
+    .catch((err) => {
+      alert("Unfortunately, there is an unexpected error. Please, try again later");
+      console.error(err);
+    })
+    .finally(() => {
+      closeModal();
+      modalForm.reset();
+      cart.resetCart();
+    });
 });
