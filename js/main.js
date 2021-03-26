@@ -41,7 +41,15 @@ const getGoods = checkGoods();
 // Cart
 
 const cart = {
-  cartGoods: [],
+  // cartGoods: localStorage.getItem("cartWillberries")
+  //   ? JSON.parse(localStorage.getItem("cartWillberries"))
+  //   : [],
+  //
+  // Same thing, but with OR
+  cartGoods: JSON.parse(localStorage.getItem("cartWillberries")) || [],
+  updateLocalStorage() {
+    localStorage.setItem("cartWillberries", JSON.stringify(this.cartGoods));
+  },
   getCountCartGoods() {
     return this.cartGoods.length;
   },
@@ -54,6 +62,7 @@ const cart = {
   clearCart() {
     this.cartGoods.length = 0;
     this.countQuantity();
+    this.updateLocalStorage();
     this.renderCart();
   },
   renderCart() {
@@ -83,8 +92,9 @@ const cart = {
   },
   deleteGood(id) {
     this.cartGoods = this.cartGoods.filter((item) => id !== item.id);
-    this.renderCart();
+    this.updateLocalStorage();
     this.countQuantity();
+    this.renderCart();
   },
   minusGood(id) {
     for (const item of this.cartGoods) {
@@ -97,8 +107,9 @@ const cart = {
         break;
       }
     }
-    this.renderCart();
     this.countQuantity();
+    this.updateLocalStorage();
+    this.renderCart();
   },
   plusGood(id) {
     for (const item of this.cartGoods) {
@@ -107,8 +118,9 @@ const cart = {
         break;
       }
     }
-    this.renderCart();
     this.countQuantity();
+    this.updateLocalStorage();
+    this.renderCart();
   },
   addCartGoods(id) {
     const goodItem = this.cartGoods.find((item) => item.id === id);
@@ -125,6 +137,7 @@ const cart = {
             count: 1,
           });
           this.countQuantity();
+          this.updateLocalStorage();
         });
     }
   },
