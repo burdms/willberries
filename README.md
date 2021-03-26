@@ -1,3 +1,3 @@
 # willberries
 
-Dmitrii Burdin's project
+JS practice
