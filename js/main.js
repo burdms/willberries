@@ -124,10 +124,6 @@ const cart = {
         });
     }
   },
-  resetCart() {
-    this.cartGoods.length = 0;
-    this.countQuantity();
-  },
 };
 
 buttonRed.addEventListener("click", cart.clearCart.bind(cart)); // .bind to save "cart" as "this"
@@ -292,6 +288,6 @@ modalForm.addEventListener("submit", (event) => {
     .finally(() => {
       closeModal();
       modalForm.reset();
-      cart.resetCart();
+      cart.clearCart();
     });
 });
